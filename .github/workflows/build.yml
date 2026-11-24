@@ -12,6 +12,17 @@ jobs:
       - name: Kodu çek
         uses: actions/checkout@v4
 
+      - name: Zip varsa aç
+        run: |
+          if [ -z "$(find . -name settings.gradle -not -path './.git/*' | head -n1)" ]; then
+            z=$(find . -maxdepth 2 -name '*.zip' -not -path './.git/*' | head -n1)
+            if [ -n "$z" ]; then
+              echo "Zip bulundu, açılıyor: $z"
+              mkdir -p _proje
+              unzip -q "$z" -d _proje
+            fi
+          fi
+
       - name: Proje klasörünü bul
         id: proj
         run: |
